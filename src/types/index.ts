@@ -1,9 +1,11 @@
 export interface Trader {
   id: string;
   businessId: string;
+  businessName: string;
   name: string;
   email: string;
-  stripeAccountId: string | null;
+  phone: string | null;
+  stripeAccountId?: string | null;
   stripeOnboarded: boolean;
   workingHoursStart: string;
   workingHoursEnd: string;
@@ -62,7 +64,8 @@ export interface RegisterDto {
   name: string;
   email: string;
   password: string;
-  businessName: string;
+  businessName?: string;
+  phone?: string;
 }
 
 export interface AuthResponse {
