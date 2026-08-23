@@ -3,20 +3,21 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 import {
   CalendarClock,
   Menu,
   X,
-  Sparkles,
-  ShieldCheck,
-  ArrowRight,
   Zap,
-  LogIn
+  LogIn,
+  LayoutDashboard,
+  LogOut,
 } from "lucide-react";
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { isAuthenticated, logout } = useAuth();
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -39,9 +40,13 @@ export function Navbar() {
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5">
-              <span className="text-xl font-bold tracking-tight text-white">Trade<span className="text-amber-400">Slot</span></span>
+              <span className="text-xl font-bold tracking-tight text-white">
+                Trade<span className="text-amber-400">Slot</span>
+              </span>
             </div>
-            <span className="text-[10px] tracking-wider uppercase text-slate-400 -mt-1 font-medium">Smart Buffer Engine</span>
+            <span className="text-[10px] tracking-wider uppercase text-slate-400 -mt-1 font-medium">
+              Smart Buffer Engine
+            </span>
           </div>
         </Link>
 
@@ -64,21 +69,43 @@ export function Navbar() {
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
-          <Link
-            href="/login"
-            className="flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-900/80 px-3.5 py-2 text-xs font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
-          >
-            <LogIn className="h-3.5 w-3.5 text-slate-400" />
-            Trader Login
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-400 px-4 py-2 text-xs font-semibold text-slate-950 shadow-sm shadow-amber-500/20 transition hover:brightness-110 active:scale-98"
+              >
+                <LayoutDashboard className="h-3.5 w-3.5" />
+                Dashboard
+              </Link>
+              <button
+                type="button"
+                onClick={() => logout()}
+                className="flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-900/80 px-3.5 py-2 text-xs font-semibold text-slate-200 transition hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400"
+              >
+                <LogOut className="h-3.5 w-3.5" />
+                Log out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-900/80 px-3.5 py-2 text-xs font-semibold text-slate-200 transition hover:border-slate-500 hover:bg-slate-800"
+              >
+                <LogIn className="h-3.5 w-3.5 text-slate-400" />
+                Trader Login
+              </Link>
 
-          <Link
-            href="/register"
-            className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-400 px-4 py-2 text-xs font-semibold text-slate-950 shadow-sm shadow-amber-500/20 transition hover:brightness-110 active:scale-98"
-          >
-            <Zap className="h-3.5 w-3.5 fill-slate-950" />
-            Get Started
-          </Link>
+              <Link
+                href="/register"
+                className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-400 px-4 py-2 text-xs font-semibold text-slate-950 shadow-sm shadow-amber-500/20 transition hover:brightness-110 active:scale-98"
+              >
+                <Zap className="h-3.5 w-3.5 fill-slate-950" />
+                Get Started
+              </Link>
+            </>
+          )}
         </div>
 
         <div className="flex md:hidden">
@@ -113,22 +140,48 @@ export function Navbar() {
               );
             })}
             <div className="pt-4 border-t border-slate-800 flex flex-col gap-2.5">
-              <Link
-                href="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-700 bg-slate-900 px-4 py-2.5 text-sm font-semibold text-slate-200 hover:bg-slate-800"
-              >
-                <LogIn className="h-4 w-4 text-slate-400" />
-                Trader Login
-              </Link>
-              <Link
-                href="/register"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-amber-400 px-4 py-2.5 text-sm font-semibold text-slate-950 shadow-md hover:bg-amber-300"
-              >
-                <Zap className="h-4 w-4 fill-slate-950" />
-                Get Started
-              </Link>
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-amber-400 px-4 py-2.5 text-sm font-semibold text-slate-950 shadow-md hover:bg-amber-300"
+                  >
+                    <LayoutDashboard className="h-4 w-4" />
+                    Dashboard
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      logout();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-700 bg-slate-900 px-4 py-2.5 text-sm font-semibold text-slate-200 hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Log out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-700 bg-slate-900 px-4 py-2.5 text-sm font-semibold text-slate-200 hover:bg-slate-800"
+                  >
+                    <LogIn className="h-4 w-4 text-slate-400" />
+                    Trader Login
+                  </Link>
+                  <Link
+                    href="/register"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-amber-400 px-4 py-2.5 text-sm font-semibold text-slate-950 shadow-md hover:bg-amber-300"
+                  >
+                    <Zap className="h-4 w-4 fill-slate-950" />
+                    Get Started
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>

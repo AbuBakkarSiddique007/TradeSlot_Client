@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 import { useAuth } from "@/context/AuthContext";
 import { authService } from "@/services/auth.service";
 import type { RegisterDto } from "@/types";
@@ -27,12 +28,34 @@ export default function RegisterPage() {
       const result = await authService.register(payload);
       login(result.token, result.trader);
 
-      router.push("/dashboard");
+      await Swal.fire({
+        icon: "success",
+        title: "Account Created!",
+        text: `Welcome to TradeSlot, ${result.trader.name}`,
+        timer: 1500,
+        showConfirmButton: false,
+        background: "#0f172a",
+        color: "#f8fafc",
+      });
 
+      router.push("/dashboard");
     } catch (err: unknown) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const axiosError = err as any;
       const msg =
-        err instanceof Error ? err.message : "Registration failed. Please try again.";
+        axiosError?.response?.data?.message ||
+        (err instanceof Error ? err.message : "Registration failed. Please try again.");
+
       setServerError(msg);
+
+      Swal.fire({
+        icon: "error",
+        title: "Registration Failed",
+        text: msg,
+        background: "#0f172a",
+        color: "#f8fafc",
+        confirmButtonColor: "#f59e0b",
+      });
     }
   };
 
@@ -93,7 +116,6 @@ export default function RegisterPage() {
               <p className="mt-1 text-xs text-red-400">{errors.email.message}</p>
             )}
           </div>
-
 
           <div>
             <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-slate-300">

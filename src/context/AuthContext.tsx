@@ -1,6 +1,11 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useSyncExternalStore,
+  useCallback,
+} from "react";
 import type { Trader } from "@/types";
 
 interface AuthState {
@@ -13,35 +18,60 @@ interface AuthState {
 
 const AuthContext = createContext<AuthState | null>(null);
 
+function subscribe(callback: () => void) {
+  window.addEventListener("storage", callback);
+  return () => window.removeEventListener("storage", callback);
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [token, setToken] = useState<string | null>(() => {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem("token");
-  });
 
-  const [trader, setTrader] = useState<Trader | null>(() => {
-    if (typeof window === "undefined") return null;
-    const stored = localStorage.getItem("trader");
-    return stored ? (JSON.parse(stored) as Trader) : null;
-  });
+  const token = useSyncExternalStore(
+    subscribe,
+    () => (typeof window !== "undefined" ? localStorage.getItem("token") : null),
+    () => null
+  );
 
-  const login = (token: string, trader: Trader) => {
-    localStorage.setItem("token", token);
-    localStorage.setItem("trader", JSON.stringify(trader));
-    setToken(token);
-    setTrader(trader);
-  };
 
-  const logout = () => {
+  const traderRaw = useSyncExternalStore(
+    subscribe,
+    () => (typeof window !== "undefined" ? localStorage.getItem("trader") : null),
+    () => null
+  );
+
+  let trader: Trader | null = null;
+  if (traderRaw) {
+    try {
+      trader = JSON.parse(traderRaw) as Trader;
+    } catch {
+      trader = null;
+    }
+  }
+
+  const login = useCallback((newToken: string, newTrader: Trader) => {
+    localStorage.setItem("token", newToken);
+    localStorage.setItem("trader", JSON.stringify(newTrader));
+
+    document.cookie = `token=${newToken}; path=/; max-age=604800; SameSite=Lax`;
+    window.dispatchEvent(new Event("storage"));
+  }, []);
+
+  const logout = useCallback(() => {
     localStorage.removeItem("token");
     localStorage.removeItem("trader");
-    setToken(null);
-    setTrader(null);
-  };
+
+    document.cookie = "token=; path=/; max-age=0; SameSite=Lax";
+    window.dispatchEvent(new Event("storage"));
+  }, []);
 
   return (
     <AuthContext.Provider
-      value={{ trader, token, isAuthenticated: !!token, login, logout }}
+      value={{
+        trader,
+        token,
+        isAuthenticated: !!token,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

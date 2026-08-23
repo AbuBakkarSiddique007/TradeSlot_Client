@@ -28,8 +28,12 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} dark antialiased`}
+      suppressHydrationWarning
     >
-      <body className="flex min-h-screen flex-col bg-[#080c14] text-slate-100 selection:bg-amber-500 selection:text-slate-950">
+      <body
+        className="flex min-h-screen flex-col bg-[#080c14] text-slate-100 selection:bg-amber-500 selection:text-slate-950"
+        suppressHydrationWarning
+      >
         <AuthProvider>
           {children}
         </AuthProvider>

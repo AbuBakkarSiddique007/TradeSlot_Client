@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 import { useAuth } from "@/context/AuthContext";
 import { authService } from "@/services/auth.service";
 import type { LoginDto } from "@/types";
@@ -26,13 +27,34 @@ export default function LoginPage() {
       const result = await authService.login(data);
       login(result.token, result.trader);
 
-      router.push("/dashboard");
+      await Swal.fire({
+        icon: "success",
+        title: "Welcome back!",
+        text: `Logged in as ${result.trader.name}`,
+        timer: 1500,
+        showConfirmButton: false,
+        background: "#0f172a",
+        color: "#f8fafc",
+      });
 
+      router.push("/dashboard");
     } catch (err: unknown) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const axiosError = err as any;
       const msg =
-        err instanceof Error ? err.message : "Login failed. Please try again.";
+        axiosError?.response?.data?.message ||
+        (err instanceof Error ? err.message : "Login failed. Please try again.");
 
       setServerError(msg);
+
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text: msg,
+        background: "#0f172a",
+        color: "#f8fafc",
+        confirmButtonColor: "#f59e0b",
+      });
     }
   };
 
@@ -43,7 +65,7 @@ export default function LoginPage() {
         <p className="mb-7 text-sm text-slate-400">Sign in to your TradeSlot account</p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
-          
+
           <div>
             <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-slate-300">
               Email address
@@ -80,7 +102,6 @@ export default function LoginPage() {
               <p className="mt-1 text-xs text-red-400">{errors.password.message}</p>
             )}
           </div>
-
 
           {serverError && (
             <p className="rounded-lg bg-red-500/10 px-4 py-2.5 text-sm text-red-400 border border-red-500/20">

@@ -17,7 +17,6 @@ const useAxiosSecure = () => {
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
-      
       return config;
     });
 
@@ -27,6 +26,8 @@ const useAxiosSecure = () => {
         const status = error.response?.status;
         if (status === 401 || status === 403) {
           localStorage.removeItem("token");
+          localStorage.removeItem("trader");
+          document.cookie = "token=; path=/; max-age=0; SameSite=Lax";
           router.push("/login");
         }
         return Promise.reject(error);

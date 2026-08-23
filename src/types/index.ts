@@ -19,6 +19,13 @@ export interface WorkArea {
   traderId: string;
   date: string;
   zoneName: string;
+  postalCodes?: string[];
+}
+
+export interface SetWorkAreaDto {
+  date: string;
+  zoneName: string;
+  postalCodes?: string[];
 }
 
 
