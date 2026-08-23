@@ -27,7 +27,6 @@ export default function ProfilePage() {
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {/* Email */}
           <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
             <div className="flex items-center gap-2 text-xs font-medium text-slate-400 mb-1">
               <Mail className="h-3.5 w-3.5 text-amber-400" />
@@ -36,7 +35,6 @@ export default function ProfilePage() {
             <p className="text-sm font-semibold text-white">{trader?.email || "—"}</p>
           </div>
 
-          {/* Business Name */}
           <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
             <div className="flex items-center gap-2 text-xs font-medium text-slate-400 mb-1">
               <Building className="h-3.5 w-3.5 text-amber-400" />
@@ -45,7 +43,6 @@ export default function ProfilePage() {
             <p className="text-sm font-semibold text-white">{trader?.businessName || "—"}</p>
           </div>
 
-          {/* Working Hours */}
           <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
             <div className="flex items-center gap-2 text-xs font-medium text-slate-400 mb-1">
               <Clock className="h-3.5 w-3.5 text-amber-400" />
@@ -56,7 +53,6 @@ export default function ProfilePage() {
             </p>
           </div>
 
-          {/* Buffer Window */}
           <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
             <div className="flex items-center gap-2 text-xs font-medium text-slate-400 mb-1">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />

@@ -14,6 +14,7 @@ interface AuthState {
   isAuthenticated: boolean;
   login: (token: string, trader: Trader) => void;
   logout: () => void;
+  refreshTrader: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthState | null>(null);
@@ -63,6 +64,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     window.dispatchEvent(new Event("storage"));
   }, []);
 
+  const refreshTrader = useCallback(async () => {
+    const storedToken = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    if (!storedToken) return;
+    try {
+      const { axiosSecure } = await import("@/hooks/useAxiosSecure");
+      const res = await axiosSecure.get<{ success: boolean; data: Trader }>("/auth/me");
+      const freshTrader = res.data.data;
+      localStorage.setItem("trader", JSON.stringify(freshTrader));
+      window.dispatchEvent(new Event("storage"));
+    } catch (err) {
+      console.error("Failed to refresh trader profile", err);
+    }
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
@@ -71,6 +86,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         isAuthenticated: !!token,
         login,
         logout,
+        refreshTrader,
       }}
     >
       {children}
