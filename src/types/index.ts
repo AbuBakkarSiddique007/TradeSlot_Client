@@ -32,22 +32,52 @@ export interface SetWorkAreaDto {
 export type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled";
 export type ChannelType = "whatsapp" | "webchat";
 
-export interface Booking {
+export interface ScheduleBooking {
   id: string;
-  traderId: string;
-  channelType: ChannelType;
-  customerRef: string;
   customerName: string;
   customerLocation: string;
   serviceDescription: string;
+  channelType: ChannelType;
   startTime: string;
   endTime: string;
   bufferMinutes: number;
   bufferedEndTime: string;
   status: BookingStatus;
   totalPrice: number;
-  feeAmount: number;
+  paymentStatus: string;
 }
+
+export interface AvailableSlot {
+  start: string;
+  end: string;
+  startHHmm: string;
+  endHHmm: string;
+  bufferMinutes: number;
+}
+
+export interface DailyScheduleResponse {
+  success: boolean;
+  traderId: string;
+  date: string;
+  workingHours: {
+    start: string;
+    end: string;
+    startHHmm: string;
+    endHHmm: string;
+  };
+  durationMinutes: number;
+  bufferMinutes: number;
+  slotStepMinutes: number;
+  bookings: ScheduleBooking[];
+  occupied: Array<{
+    startTime: string;
+    endTime: string;
+    bufferedEndTime: string;
+    status: BookingStatus;
+  }>;
+  slots: AvailableSlot[];
+}
+
 
 
 export type PaymentStatus = "pending" | "paid" | "failed" | "refunded";
