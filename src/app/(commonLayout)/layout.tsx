@@ -1,6 +1,7 @@
 import React from "react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { WebChatWidget } from "@/components/chat/WebChatWidget";
 
 export default function CommonLayout({
   children,
@@ -12,6 +13,8 @@ export default function CommonLayout({
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
+      <WebChatWidget />
     </div>
   );
 }
+

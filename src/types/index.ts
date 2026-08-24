@@ -117,3 +117,47 @@ export interface ApiResponse<T> {
   error?: string;
   message?: string;
 }
+
+export interface WebChatMessagePayload {
+  senderRef: string;
+  content: string;
+  customerName?: string;
+  customerLocation?: string;
+  serviceDescription?: string;
+}
+
+export interface WebChatOption {
+  id: string;
+  label: string;
+  description?: string;
+}
+
+export interface WebChatButton {
+  id: string;
+  label: string;
+  description?: string;
+}
+
+export interface WebChatResponse {
+  success: boolean;
+  sessionId: string;
+  messageId: string;
+  state: string;
+  bookingId?: string;
+  reply: {
+    text: string;
+    options?: WebChatOption[];
+    buttons?: WebChatButton[];
+    metadata?: Record<string, unknown>;
+  };
+}
+
+export interface ChatMessage {
+  id: string;
+  sender: "customer" | "bot";
+  text: string;
+  options?: WebChatOption[];
+  buttons?: WebChatButton[];
+  timestamp: string;
+}
+
