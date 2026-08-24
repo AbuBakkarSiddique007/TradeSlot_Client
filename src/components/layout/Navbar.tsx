@@ -26,6 +26,7 @@ export function Navbar() {
     { name: "Pricing", href: "/pricing" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
+    { name: "Book a Trade", href: "/book" },
   ];
 
   return (
@@ -53,11 +54,14 @@ export function Navbar() {
         <nav className="hidden md:flex items-center gap-1 lg:gap-2">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
+            const isBook = link.href === "/book";
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${isActive
+                className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${isBook
+                  ? "bg-amber-500/15 text-amber-300 border border-amber-500/30 hover:bg-amber-500/25"
+                  : isActive
                     ? "bg-amber-400/10 text-amber-300 border border-amber-400/20"
                     : "text-slate-300 hover:bg-slate-800/60 hover:text-white"
                   }`}
@@ -125,12 +129,15 @@ export function Navbar() {
           <div className="flex flex-col space-y-2">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
+              const isBook = link.href === "/book";
               return (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`rounded-lg px-3 py-2 text-base font-medium transition ${isActive
+                  className={`rounded-lg px-3 py-2 text-base font-medium transition ${isBook
+                    ? "bg-amber-500/15 text-amber-300 border border-amber-500/30"
+                    : isActive
                       ? "bg-amber-400/10 text-amber-300 font-semibold"
                       : "text-slate-300 hover:bg-slate-800 hover:text-white"
                     }`}

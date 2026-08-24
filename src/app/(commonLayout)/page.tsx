@@ -52,17 +52,17 @@ export default function HomePage() {
 
               <div className="flex flex-wrap items-center gap-4 pt-2">
                 <Link
-                  href="/how-it-works"
+                  href="/book"
                   className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 px-6 py-3.5 text-sm font-bold text-slate-950 shadow-lg shadow-amber-500/25 transition hover:brightness-110 hover:shadow-amber-500/40 active:scale-98"
                 >
-                  <Zap className="h-4 w-4 fill-slate-950" />
-                  Explore How It Works
+                  <MessageSquare className="h-4 w-4" />
+                  Book a Trade
                 </Link>
                 <Link
-                  href="/pricing"
+                  href="/how-it-works"
                   className="flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-900/90 px-6 py-3.5 text-sm font-semibold text-slate-200 transition hover:bg-slate-800 hover:border-slate-500 hover:text-white"
                 >
-                  View £15 Flat Fee
+                  How It Works
                   <ArrowRight className="h-4 w-4 text-slate-400" />
                 </Link>
               </div>
@@ -119,8 +119,8 @@ export default function HomePage() {
                           type="button"
                           onClick={() => setSelectedSlot(slot)}
                           className={`rounded-lg px-3 py-2 text-xs font-semibold text-center transition ${selectedSlot === slot
-                              ? "bg-amber-400 text-slate-950 shadow"
-                              : "bg-slate-950 text-slate-300 border border-slate-800 hover:border-slate-700"
+                            ? "bg-amber-400 text-slate-950 shadow"
+                            : "bg-slate-950 text-slate-300 border border-slate-800 hover:border-slate-700"
                             }`}
                         >
                           {slot}

@@ -1,12 +1,12 @@
 import React from "react";
 import Link from "next/link";
-import { 
-  CalendarClock, 
-  ShieldCheck, 
-  MessageSquare, 
-  CreditCard, 
-  Clock3, 
-  MapPin, 
+import {
+  CalendarClock,
+  ShieldCheck,
+  MessageSquare,
+  CreditCard,
+  Clock3,
+  MapPin,
   ArrowUpRight,
   Sparkles,
   Heart
@@ -88,6 +88,11 @@ export function Footer() {
             <h3 className="text-sm font-semibold text-white tracking-wider uppercase">Platform</h3>
             <ul className="mt-4 space-y-2.5 text-sm">
               <li>
+                <Link href="/book" className="font-semibold text-amber-400 hover:text-amber-300 transition-colors">
+                  Book a Trade
+                </Link>
+              </li>
+              <li>
                 <Link href="/features" className="hover:text-amber-300 transition-colors flex items-center gap-1">
                   Buffer Engine
                 </Link>
@@ -134,9 +139,9 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a 
-                  href="https://github.com" 
-                  target="_blank" 
+                <a
+                  href="https://github.com"
+                  target="_blank"
                   rel="noreferrer"
                   className="hover:text-amber-300 transition-colors flex items-center gap-1"
                 >

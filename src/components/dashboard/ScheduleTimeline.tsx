@@ -91,7 +91,7 @@ export function ScheduleTimeline() {
     setSelectedDate(newDateStr);
   };
 
-  
+
   const bookings: ScheduleBooking[] = scheduleData?.bookings ?? [];
   const openSlots: AvailableSlot[] = scheduleData?.slots ?? [];
 
@@ -231,8 +231,8 @@ export function ScheduleTimeline() {
                           </span>
                           <span
                             className={`rounded-md px-2 py-0.5 text-[11px] font-semibold uppercase ${booking.channelType === "whatsapp"
-                                ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                                : "bg-sky-500/10 text-sky-400 border border-sky-500/20"
+                              ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                              : "bg-sky-500/10 text-sky-400 border border-sky-500/20"
                               }`}
                           >
                             {booking.channelType}
@@ -294,15 +294,35 @@ export function ScheduleTimeline() {
             </div>
 
             <div className="flex flex-wrap gap-2">
-              {openSlots.map((slot, sIdx) => (
-                <div
-                  key={sIdx}
-                  className="flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800/80 px-3 py-1.5 text-xs font-mono font-medium text-slate-200 transition hover:border-amber-500/40 hover:text-amber-300"
-                >
-                  <Clock className="h-3 w-3 text-amber-400" />
-                  {slot.startHHmm} – {slot.endHHmm}
-                </div>
-              ))}
+              {openSlots.map((slot, sIdx) => {
+                const bufferMins = slot.bufferMinutes ?? scheduleData?.bufferMinutes ?? 30;
+
+                const endDate = new Date(slot.end);
+
+                const bufferEnd = new Date(endDate.getTime() + bufferMins * 60_000);
+
+                const bufferEndH = bufferEnd.getHours().toString().padStart(2, "0");
+
+                const bufferEndM = bufferEnd.getMinutes().toString().padStart(2, "0");
+                
+                const bufferEndHHmm = `${bufferEndH}:${bufferEndM}`;
+
+                return (
+                  <div
+                    key={sIdx}
+                    className="rounded-xl border border-slate-700 bg-slate-800/80 px-3 py-2 text-xs font-mono transition hover:border-amber-500/40"
+                  >
+                    <div className="flex items-center gap-1.5 text-slate-200 font-medium">
+                      <Clock className="h-3 w-3 text-amber-400 shrink-0" />
+                      {slot.startHHmm} – {slot.endHHmm}
+                    </div>
+                    <div className="mt-1 flex items-center gap-1 text-[11px] text-amber-400/80">
+                      <ShieldCheck className="h-2.5 w-2.5 shrink-0" />
+                      <span>+{bufferMins}min buffer until {bufferEndHHmm}</span>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
