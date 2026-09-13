@@ -6,6 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { workAreaService } from "@/services/workArea.service";
 import { scheduleService } from "@/services/schedule.service";
 import type { WorkArea, DailyScheduleResponse } from "@/types";
+import { getTodayDateStr } from "@/utils/date";
 import {
   CalendarClock,
   BadgePoundSterling,
@@ -32,7 +33,7 @@ export default function DashboardPage() {
 
     async function loadDashboardData() {
       try {
-        const todayStr = new Date().toISOString().split("T")[0];
+        const todayStr = getTodayDateStr();
         const [areaData, scheduleData] = await Promise.all([
           workAreaService.getWorkArea(todayStr).catch(() => null),
           scheduleService.getDailySchedule(todayStr).catch(() => null),

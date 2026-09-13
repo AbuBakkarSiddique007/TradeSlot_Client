@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { workAreaService } from "@/services/workArea.service";
 import type { WorkArea } from "@/types";
+import { getTodayDateStr, addDays } from "@/utils/date";
 import { MapPin, Calendar, CheckCircle2, Loader2, Sparkles } from "lucide-react";
 
 interface FormValues {
@@ -12,8 +13,6 @@ interface FormValues {
   zoneName: string;
   postalCodesStr: string;
 }
-
-const getTodayDateStr = () => new Date().toISOString().split("T")[0];
 
 export function WorkAreaCard({ onUpdated }: { onUpdated?: (wa: WorkArea) => void }) {
   const today = getTodayDateStr();
@@ -149,9 +148,7 @@ export function WorkAreaCard({ onUpdated }: { onUpdated?: (wa: WorkArea) => void
           <button
             type="button"
             onClick={() => {
-              const tomorrow = new Date();
-              tomorrow.setDate(tomorrow.getDate() + 1);
-              handleDateChange(tomorrow.toISOString().split("T")[0]);
+              handleDateChange(addDays(new Date(), 1));
             }}
             className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
               selectedDate !== today

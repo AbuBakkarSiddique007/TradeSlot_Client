@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { scheduleService } from "@/services/schedule.service";
 import type { DailyScheduleResponse, ScheduleBooking, AvailableSlot } from "@/types";
+import { getTodayDateStr, addDays } from "@/utils/date";
 import {
   CalendarClock,
   ChevronLeft,
@@ -16,8 +17,6 @@ import {
   Sparkles,
   BadgePoundSterling,
 } from "lucide-react";
-
-const getTodayDateStr = () => new Date().toISOString().split("T")[0];
 
 const formatDisplayDate = (dateStr: string) => {
   const [y, m, d] = dateStr.split("-").map(Number);
@@ -78,10 +77,7 @@ export function ScheduleTimeline() {
   const changeDateByDays = (days: number) => {
     setIsLoading(true);
     const [y, m, d] = selectedDate.split("-").map(Number);
-    const current = new Date(y, m - 1, d);
-    current.setDate(current.getDate() + days);
-    const newStr = current.toISOString().split("T")[0];
-    setSelectedDate(newStr);
+    setSelectedDate(addDays(new Date(y, m - 1, d), days));
   };
 
 
