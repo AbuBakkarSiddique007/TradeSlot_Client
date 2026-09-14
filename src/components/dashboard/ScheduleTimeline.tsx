@@ -66,10 +66,23 @@ export function ScheduleTimeline() {
       }
     }
 
+    const onFocus = () => {
+      loadSchedule();
+    };
+
+    window.addEventListener("focus", onFocus);
+    const pollTimer = setInterval(() => {
+      if (document.visibilityState === "visible") {
+        loadSchedule();
+      }
+    }, 30_000);
+
     loadSchedule();
 
     return () => {
       isCancelled = true;
+      clearInterval(pollTimer);
+      window.removeEventListener("focus", onFocus);
     };
 
   }, [selectedDate]);

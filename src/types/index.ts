@@ -161,3 +161,16 @@ export interface ChatMessage {
   timestamp: string;
 }
 
+export interface Lead {
+  id: string;
+  channelType: ChannelType;
+  senderRef: string;
+  customerName: string | null;
+  customerPhone: string | null;
+  customerLocation: string | null;
+  serviceDescription: string | null;
+  leadOutcome: string;
+  leadZoneName: string | null;
+  updatedAt: string;
+}
+

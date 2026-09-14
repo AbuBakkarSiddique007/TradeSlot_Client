@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { workAreaService } from "@/services/workArea.service";
 import { scheduleService } from "@/services/schedule.service";
-import type { WorkArea, DailyScheduleResponse } from "@/types";
+import { leadsService } from "@/services/leads.service";
+import type { WorkArea, DailyScheduleResponse, Lead } from "@/types";
 import { getTodayDateStr } from "@/utils/date";
 import {
   CalendarClock,
@@ -14,12 +15,15 @@ import {
   CreditCard,
   ArrowRight,
   ShieldCheck,
+  Inbox,
+  PhoneCall,
 } from "lucide-react";
 
 export default function DashboardPage() {
   const { trader } = useAuth();
   const [todayWorkArea, setTodayWorkArea] = useState<WorkArea | null>(null);
   const [todaySchedule, setTodaySchedule] = useState<DailyScheduleResponse | null>(null);
+  const [leads, setLeads] = useState<Lead[]>([]);
 
   const formattedDate = new Date().toLocaleDateString("en-GB", {
     weekday: "long",
@@ -34,14 +38,16 @@ export default function DashboardPage() {
     async function loadDashboardData() {
       try {
         const todayStr = getTodayDateStr();
-        const [areaData, scheduleData] = await Promise.all([
+        const [areaData, scheduleData, leadsData] = await Promise.all([
           workAreaService.getWorkArea(todayStr).catch(() => null),
           scheduleService.getDailySchedule(todayStr).catch(() => null),
+          leadsService.getLeads().catch(() => []),
         ]);
 
         if (!isCancelled) {
           setTodayWorkArea(areaData);
           setTodaySchedule(scheduleData);
+          setLeads(leadsData);
         }
 
       } catch (err) {
@@ -223,6 +229,67 @@ export default function DashboardPage() {
                   </span>
                   <span className="rounded bg-emerald-500/10 text-emerald-400 px-2 py-0.5 text-[11px] font-semibold border border-emerald-500/20">
                     {b.status.toUpperCase()}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+          <div className="flex items-center gap-2">
+            <Inbox className="h-5 w-5 text-sky-400" />
+            <h2 className="text-base font-bold text-white">Outside-Zone Enquiries (Leads)</h2>
+          </div>
+          <span className="text-xs text-slate-500">
+            {leads.length === 1 ? "1 enquiry" : `${leads.length} enquiries`} awaiting contact
+          </span>
+        </div>
+
+        {leads.length === 0 ? (
+          <div className="py-6 text-center text-slate-500">
+            <PhoneCall className="mx-auto mb-2 h-6 w-6 text-slate-600" />
+            <p className="text-sm font-medium text-slate-400">No leads yet</p>
+            <p className="text-xs text-slate-600 mt-0.5">
+              Enquiries from areas outside your daily zone land here so you can decide to take or pass them.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {leads.slice(0, 6).map((lead) => (
+              <div
+                key={lead.id}
+                className="flex items-start justify-between gap-3 rounded-xl border border-slate-800 bg-slate-950/60 p-3.5 text-xs"
+              >
+                <div className="space-y-0.5">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="font-semibold text-white">
+                      {lead.customerName ?? "Enquiry"}
+                    </span>
+                    <span className="rounded bg-sky-500/10 px-2 py-0.5 text-[11px] font-semibold text-sky-400 border border-sky-500/20 uppercase">
+                      {lead.channelType}
+                    </span>
+                  </div>
+                  <p className="text-slate-300">{lead.serviceDescription ?? "No description"}</p>
+                  <p className="text-slate-500 flex items-center gap-1">
+                    <MapPin className="h-3 w-3" />
+                    {lead.customerLocation ?? "Unknown area"}
+                    {lead.leadZoneName ? ` — outside ${lead.leadZoneName}` : ""}
+                  </p>
+                </div>
+                <div className="flex shrink-0 items-center gap-2">
+                  {lead.customerPhone && (
+                    <span className="rounded bg-emerald-500/10 px-2 py-1 font-mono text-[11px] text-emerald-400 border border-emerald-500/20">
+                      {lead.customerPhone}
+                    </span>
+                  )}
+                  <span className="text-[11px] text-slate-600">
+                    {new Date(lead.updatedAt).toLocaleTimeString("en-GB", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
                   </span>
                 </div>
               </div>
