@@ -5,9 +5,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import { Sparkles } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { authService } from "@/services/auth.service";
 import type { LoginDto } from "@/types";
+
+const DEMO_EMAIL = "trader.ctg@tradeslot.com";
+const DEMO_PASSWORD = "password123";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -17,11 +21,14 @@ export default function LoginPage() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<LoginDto>();
 
   const onSubmit = async (data: LoginDto) => {
     setServerError("");
+    setValue("email", data.email);
+    setValue("password", data.password);
 
     try {
       const result = await authService.login(data);
@@ -56,6 +63,12 @@ export default function LoginPage() {
         confirmButtonColor: "#f59e0b",
       });
     }
+  };
+
+  const demoLogin = () => {
+    setValue("email", DEMO_EMAIL);
+    setValue("password", DEMO_PASSWORD);
+    void handleSubmit(onSubmit)();
   };
 
   return (
@@ -117,6 +130,31 @@ export default function LoginPage() {
             {isSubmitting ? "Signing in..." : "Sign in"}
           </button>
         </form>
+
+        <div className="my-6 flex items-center gap-3">
+          <span className="h-px flex-1 bg-slate-700" />
+          <span className="text-xs text-slate-500">or</span>
+          <span className="h-px flex-1 bg-slate-700" />
+        </div>
+
+        <div className="space-y-3">
+          <button
+            type="button"
+            onClick={demoLogin}
+            disabled={isSubmitting}
+            className="flex w-full items-center justify-center gap-2 rounded-lg border border-amber-500/40 bg-amber-500/10 py-2.5 text-sm font-semibold text-amber-400 transition hover:bg-amber-500/20 disabled:opacity-60"
+          >
+            <Sparkles className="h-4 w-4" />
+            Login with Demo Trader
+          </button>
+          <p className="text-center text-xs text-slate-500">
+            <span className="font-medium text-slate-400">{DEMO_EMAIL}</span>
+            {"  /  "}
+            <span className="font-medium text-slate-400">{DEMO_PASSWORD}</span>
+            <br />
+            Pre-configured trading zone, schedule &amp; Stripe payouts — no setup needed.
+          </p>
+        </div>
 
         <p className="mt-6 text-center text-sm text-slate-400">
           Don&apos;t have an account?{" "}
