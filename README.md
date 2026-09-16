@@ -18,6 +18,7 @@ Frontend web application for **TradeSlot** — a chat-driven booking platform wh
   - Stripe Connect onboarding + payout status
   - Profile and working-hours settings
 - **JWT authentication** — register, login, protected `/dashboard` routes.
+- **One-click demo login** — the login page offers a "Login with Demo Trader" button (`trader.ctg@tradeslot.com` / `password123`); the account ships pre-configured with a trading zone, schedule & Stripe payouts so testers can explore immediately.
 - Fully responsive Tailwind 4 UI with dark mode styling.
 
 ## Tech Stack
