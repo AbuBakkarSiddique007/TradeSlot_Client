@@ -3,18 +3,11 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import {
-  UserCheck,
   MapPin,
-  MessageSquare,
   CalendarClock,
-  CreditCard,
-  ShieldCheck,
   Sparkles,
   ArrowRight,
-  Bot,
-  Smartphone,
-  CheckCircle2,
-  Zap
+  CheckCircle2
 } from "lucide-react";
 
 export default function HowItWorksPage() {

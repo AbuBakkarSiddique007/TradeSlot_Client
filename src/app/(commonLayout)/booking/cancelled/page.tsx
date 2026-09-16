@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { AlertCircle, Home, MessageSquare, ArrowLeft } from "lucide-react";
+import { AlertCircle, Home, MessageSquare } from "lucide-react";
 import { Suspense } from "react";
 
 function BookingCancelledContent() {

@@ -1,11 +1,8 @@
 import React from "react";
 import Link from "next/link";
-import { 
-  CalendarClock, 
-  ArrowLeft, 
-  Home, 
-  Sparkles, 
-  Search, 
+import {
+  Home,
+  Sparkles,
   HelpCircle,
   Clock
 } from "lucide-react";

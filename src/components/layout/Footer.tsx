@@ -2,14 +2,12 @@ import React from "react";
 import Link from "next/link";
 import {
   CalendarClock,
-  ShieldCheck,
   MessageSquare,
   CreditCard,
   Clock3,
   MapPin,
   ArrowUpRight,
-  Sparkles,
-  Heart
+  Sparkles
 } from "lucide-react";
 
 export function Footer() {

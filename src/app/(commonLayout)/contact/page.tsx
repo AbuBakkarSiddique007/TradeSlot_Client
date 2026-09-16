@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { 
   Mail, 
   MessageSquare, 
-  Phone, 
   MapPin, 
   CheckCircle2, 
   Send, 

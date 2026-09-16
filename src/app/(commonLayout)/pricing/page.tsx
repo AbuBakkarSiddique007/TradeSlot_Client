@@ -4,13 +4,10 @@ import React, { useState } from "react";
 import Link from "next/link";
 import {
   Check,
-  HelpCircle,
   Sparkles,
   ArrowRight,
   ShieldCheck,
-  CreditCard,
-  Calculator,
-  Zap
+  Calculator
 } from "lucide-react";
 
 export default function PricingPage() {

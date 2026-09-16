@@ -4,11 +4,8 @@ import {
   CalendarClock,
   Target,
   ShieldCheck,
-  Users,
-  MapPin,
   Sparkles,
-  ArrowRight,
-  Zap
+  ArrowRight
 } from "lucide-react";
 
 export default function AboutPage() {

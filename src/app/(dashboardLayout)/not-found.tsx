@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Clock, LayoutDashboard, ArrowLeft } from "lucide-react";
+import { Clock, LayoutDashboard } from "lucide-react";
 
 export default function DashboardNotFound() {
   return (

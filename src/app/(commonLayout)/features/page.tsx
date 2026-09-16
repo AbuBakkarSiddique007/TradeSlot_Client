@@ -6,7 +6,6 @@ import {
   CreditCard,
   MapPin,
   ShieldCheck,
-  Zap,
   Bot,
   Smartphone,
   ArrowRight,

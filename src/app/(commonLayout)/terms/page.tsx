@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import { FileText } from "lucide-react";
 
 export default function TermsPage() {

@@ -4,25 +4,20 @@ import React, { useState } from "react";
 import Link from "next/link";
 import {
   Clock,
-  Calendar,
   MessageSquare,
   CreditCard,
   MapPin,
   CheckCircle2,
   ArrowRight,
-  ShieldCheck,
   Sparkles,
   Check,
   X as XIcon,
-  Navigation,
-  Bot,
-  Zap,
-  UserCheck
+  Navigation
 } from "lucide-react";
 
 export default function HomePage() {
   const [selectedSlot, setSelectedSlot] = useState("09:00 - 10:00");
-  const [jobType, setJobType] = useState("Boiler Servicing (60 mins)");
+  const [jobType] = useState("Boiler Servicing (60 mins)");
 
   return (
     <div className="flex flex-col gap-20 pb-20 overflow-hidden bg-grid-pattern">

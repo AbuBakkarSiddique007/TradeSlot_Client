@@ -17,14 +17,15 @@ export default function RegisterPage() {
   const {
     register,
     handleSubmit,
-    watch,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<RegisterDto & { confirmPassword: string }>();
 
   const onSubmit = async (data: RegisterDto & { confirmPassword: string }) => {
     setServerError("");
     try {
-      const { confirmPassword: _, ...payload } = data;
+      const { confirmPassword, ...payload } = data;
+      void confirmPassword;
       const result = await authService.register(payload);
       login(result.token, result.trader);
 
@@ -150,7 +151,7 @@ export default function RegisterPage() {
               {...register("confirmPassword", {
                 required: "Please confirm your password",
                 validate: (val) =>
-                  val === watch("password") || "Passwords do not match",
+                  val === getValues("password") || "Passwords do not match",
               })}
             />
             {errors.confirmPassword && (

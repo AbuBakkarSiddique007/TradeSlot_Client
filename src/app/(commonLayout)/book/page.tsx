@@ -1,7 +1,7 @@
 "use client";
 
 import { WebChatWidget } from "@/components/chat/WebChatWidget";
-import { Bot, ShieldCheck, Clock, MapPin, Zap } from "lucide-react";
+import { ShieldCheck, Clock, MapPin, Zap } from "lucide-react";
 
 export default function BookPage() {
   return (
